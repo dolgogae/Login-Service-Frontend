@@ -1,16 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom'; // react-router-dom에서 Link 가져오기
+import { Link, useNavigate } from 'react-router-dom'; // react-router-dom에서 Link 가져오기
+import axios from 'axios';
 
 function LoginPage() {
   // 로그인 폼 제출 처리를 여기에 추가
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    console.log("press login up button");
+    e.preventDefault();
+
+    try {
+      // Axios를 사용하여 백엔드로 POST 요청을 보냅니다.
+      const response = await axios.post('http://localhost:8080/auth/login', {
+        email,
+        password,
+      });
+
+      // 서버로부터의 응답을 처리합니다.
+      console.log('서버 응답:', response.data);
+      navigate('/')
+    } catch (error) {
+      console.error('서버 오류:', error);
+    }
+  }
 
   return (
     <LoginContainer>
-      <LoginForm>
+      <LoginForm onSubmit={handleSubmit}>
         <Title>Log in</Title>
-        <InputField type="text" placeholder="email" />
-        <InputField type="password" placeholder="password" />
+        <InputField
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <InputField
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <SubmitButton type="submit">Log In</SubmitButton>
         <SocialLoginButtons>
           <SocialButtonGoogle>
@@ -25,7 +58,6 @@ function LoginPage() {
         </SocialLoginButtons>
         <Divider></Divider>
         <SignUpButton to="/sign-up">Sign Up</SignUpButton>
-
       </LoginForm>
     </LoginContainer>
   );
@@ -56,7 +88,7 @@ const LoginContainer = styled.div`
   background-color: #f5f5f5;
 `;
 
-const LoginForm = styled.div`
+const LoginForm = styled.form`
   background-color: #ffffff;
   border: 1px solid ${ForestGreen}; /* 테두리 색상 변경 */
   border-radius: 8px; /* 꼭지점 둥글게 설정 */
