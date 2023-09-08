@@ -16,9 +16,9 @@ function LoginPage() {
 
   useEffect(() => {
 
-    console.log(auth.token);
+    const token = localStorage.getItem('refreshToken');
 
-    if(auth.token){
+    if(token){
       navigate('/');
     }
   },[auth])
@@ -36,7 +36,8 @@ function LoginPage() {
 
       // 서버로부터의 응답을 처리합니다.
       console.log('서버 응답:', response.data.refreshToken);
-      dispatch(setToken(response.data.refreshToken));
+      dispatch(setToken(response.data.data));
+      localStorage.setItem('refreshToken', response.data.data.refreshToken);
 
       navigate('/')
     } catch (error) {
