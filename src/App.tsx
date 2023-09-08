@@ -11,7 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={< MainPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/sign-in" element={<SignInPage />} />
+      <Route path="/sign-up" element={<SignInPage />} />
 
       {/* "catch-all" 라우트 */}
       <Route path="*" element={<ErrorPage />} />

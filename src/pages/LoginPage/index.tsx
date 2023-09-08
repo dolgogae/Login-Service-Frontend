@@ -1,8 +1,52 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom'; // react-router-dom에서 Link 가져오기
+
+function LoginPage() {
+  // 로그인 폼 제출 처리를 여기에 추가
+
+  return (
+    <LoginContainer>
+      <LoginForm>
+        <Title>Log in</Title>
+        <InputField type="text" placeholder="email" />
+        <InputField type="password" placeholder="password" />
+        <SubmitButton type="submit">Log In</SubmitButton>
+        <SocialLoginButtons>
+          <SocialButtonGoogle>
+            <Icon src='./icons/google-icon.png' alt='Google Icon'/>
+          </SocialButtonGoogle>
+          <SocialButtonKakao>
+            <Icon src='./icons/kakao-icon.png' alt='Kakao Icon'/>
+          </SocialButtonKakao>
+          <SocialButtonNaver>
+            <Icon src='./icons/naver-icon.png' alt='naver Icon'/>
+          </SocialButtonNaver>
+        </SocialLoginButtons>
+        <Divider></Divider>
+        <SignUpButton to="/sign-up">Sign Up</SignUpButton>
+
+      </LoginForm>
+    </LoginContainer>
+  );
+}
+
+export default LoginPage;
 
 const ForestGreen = '#228B22'; // 포레스트 그린 색상
 const LightGreen = '#add8e6';
+
+const Icon = styled.img`
+  width: 20px; /* 이미지 크기 설정 */
+  height: 20px;
+  margin-right: 10px; /* 이미지와 텍스트 사이 간격 설정 */
+`;
+
+const Divider = styled.div`
+  border-top: 1px solid #ccc;
+  margin: 30px auto;
+  width: 300px;
+`
 
 const LoginContainer = styled.div`
   display: flex;
@@ -19,6 +63,9 @@ const LoginForm = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 400px;
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 요소 배치 */
+  align-items: center; /* 가운데 정렬 */
 `;
 
 const Title = styled.h2`
@@ -27,6 +74,7 @@ const Title = styled.h2`
 `;
 
 const InputField = styled.input`
+  display: flex;
   width: 94%;
   padding: 10px;
   margin-bottom: 20px;
@@ -36,7 +84,7 @@ const InputField = styled.input`
 `;
 
 const SubmitButton = styled.button`
-  width: 100%;
+  width: 400px;
   padding: 10px;
   background-color: ${ForestGreen}; /* 버튼 색상 변경 */
   color: #ffffff;
@@ -45,38 +93,69 @@ const SubmitButton = styled.button`
   font-size: 18px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 10px 0; /* 상하 여백 추가 */
 
   &:hover {
     background-color: #1d8c40; /* 호버 시 버튼 색상 변경 */
   }
 `;
 
-const SignupButton = styled.button`
-  width: 100%;
+const SocialLoginButtons = styled.div`
+  display: flex; /* 가로로 나란히 배치 */
+  justify-content: space-between; /* 각 버튼을 좌우로 분산 배치 */
+  gap: 10px;
+`;
+
+const SocialButtonBase = styled.button`
+  /* 소셜 로그인 버튼 공통 스타일링 */
   padding: 10px;
-  background-color: #ffffff; /* 버튼 색상 변경 */
-  color: ${ForestGreen}; /* 텍스트 색상 변경 */
-  border: 1px solid ${LightGreen}; /* 테두리 색상 변경 */
+  cursor: pointer;
+  width: 125px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  align-items: center; /* 이미지 수직 가운데 정렬 */
+
+`;
+
+
+const SocialButtonGoogle = styled(SocialButtonBase)`
+  /* 구글 로그인 버튼 스타일링 */
+  background-color: #fff;
+  border: 1px solid #519ecf; /* 무지개색 테두리 */
+  color: #519ecf; /* 무지개색 글자색 */
+`;
+
+const SocialButtonKakao = styled(SocialButtonBase)`
+  /* 카카오 로그인 버튼 스타일링 */
+  background-color: #ffe812; /* 카카오 노란색 배경 */
+  color: #000; /* 글자색 */
+`;
+
+const SocialButtonNaver = styled(SocialButtonBase)`
+  /* 네이버 로그인 버튼 스타일링 */
+  background-color: #1ec800; /* 네이버 초록색 배경 */
+  color: #fff; /* 글자색 */
+`;
+
+
+const SignUpButton = styled(Link)`
+  width: 375px;
+  padding: 10px;
+  background-color: #ffffff;
+  color: ${ForestGreen};
+  border: 1px solid ${ForestGreen};
   border-radius: 4px;
   font-size: 18px;
   cursor: pointer;
-  margin-top: 10px; /* 상단 마진 추가 */
+  text-align: center;
+  text-decoration: none; /* 링크 기본 밑줄 제거 */
+  margin: 10px 0; /* 상하 여백 추가 */
+  outline: none; /* 포커스 효과 제거 */
+
+  &:hover {
+    background-color: #146b32;
+  }
 `;
-
-function LoginPage() {
-  // 로그인 폼 제출 처리를 여기에 추가
-
-  return (
-    <LoginContainer>
-      <LoginForm>
-        <Title>로그인</Title>
-        <InputField type="text" placeholder="아이디" />
-        <InputField type="password" placeholder="비밀번호" />
-        <SubmitButton type="submit">로그인</SubmitButton>
-        <SignupButton>회원가입</SignupButton>
-      </LoginForm>
-    </LoginContainer>
-  );
-}
-
-export default LoginPage;
