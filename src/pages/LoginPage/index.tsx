@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom'; // react-router-dom에서 Link 가져오기
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken } from '../../reducers/authSlice';
+import { RootState } from '../../reducers/store';
 
 function LoginPage() {
   // 로그인 폼 제출 처리를 여기에 추가
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+
+    console.log(auth.token);
+
+    if(auth.token){
+      navigate('/');
+    }
+  },[auth])
 
   const handleSubmit = async (e: React.FormEvent) => {
     console.log("press login up button");
@@ -21,7 +35,9 @@ function LoginPage() {
       });
 
       // 서버로부터의 응답을 처리합니다.
-      console.log('서버 응답:', response.data);
+      console.log('서버 응답:', response.data.refreshToken);
+      dispatch(setToken(response.data.refreshToken));
+
       navigate('/')
     } catch (error) {
       console.error('서버 오류:', error);
@@ -66,7 +82,7 @@ function LoginPage() {
 export default LoginPage;
 
 const ForestGreen = '#228B22'; // 포레스트 그린 색상
-const LightGreen = '#add8e6';
+// const LightGreen = '#add8e6';
 
 const Icon = styled.img`
   width: 20px; /* 이미지 크기 설정 */

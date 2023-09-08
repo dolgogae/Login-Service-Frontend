@@ -11,7 +11,7 @@ function SignInPage() {
     const navigate = useNavigate();
   
     const handleSubmit = async (e: React.FormEvent) => {
-      console.log("press submit button");
+      console.log("press sign up button");
       e.preventDefault();
   
       try {
