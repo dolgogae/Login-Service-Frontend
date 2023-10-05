@@ -1,29 +1,42 @@
 // src/store/authSlice.ts
 
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface AuthState {
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
 }
 
 const initialState: AuthState = {
-  token: null,
+  refreshToken: localStorage.getItem('refreshToken') || null,
+  accessToken: localStorage.getItem('accessToken') || null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setToken: (state, action) => {
-      state.token = action.payload;
-      console.log(state.token);
+    setRefreshToken: (state, action: PayloadAction<string>) => {
+      // state.token = action.payload;
+      console.log("set refresh token" + action.payload);
+      localStorage.setItem('refreshToken', action.payload);
+      state.accessToken = action.payload;
     },
-    removeToken: (state) => {
-      state.token = null;
+    removeRefreshToken: (state) => {
+      state.refreshToken = null;
+    },
+    setAccessToken: (state, action: PayloadAction<string>) => {
+      // state.token = action.payload;
+      console.log("set access token" + action.payload);
+      localStorage.setItem('accessToken', action.payload);
+      state.accessToken = action.payload;
+    },
+    removeAccessToken: (state) => {
+      state.accessToken = null;
     },
   },
 });
 
-export const { setToken, removeToken } = authSlice.actions;
+export const { setRefreshToken, removeRefreshToken, setAccessToken, removeAccessToken } = authSlice.actions;
 
 export default authSlice.reducer;

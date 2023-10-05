@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom'; // react-router-dom에서 Link 가져오기
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { setToken } from '../../reducers/authSlice';
+import { setAccessToken, setRefreshToken } from '../../reducers/authSlice';
 import { RootState } from '../../reducers/store';
 
 function LoginPage() {
@@ -12,16 +12,7 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const auth = useSelector((state: RootState) => state.auth);
-
-  useEffect(() => {
-
-    const token = localStorage.getItem('refreshToken');
-
-    if(token){
-      navigate('/');
-    }
-  },[auth])
+  const { accessToken, refreshToken} = useSelector((state: RootState) => state.auth);
 
   const handleSubmit = async (e: React.FormEvent) => {
     console.log("press login up button");
@@ -31,13 +22,19 @@ function LoginPage() {
       // Axios를 사용하여 백엔드로 POST 요청을 보냅니다.
       const response = await axios.post('http://localhost:8080/auth/login', {
         email,
-        password,
+        password, 
       });
 
       // 서버로부터의 응답을 처리합니다.
-      console.log('서버 응답:', response.data.refreshToken);
-      dispatch(setToken(response.data.data));
-      localStorage.setItem('refreshToken', response.data.data.refreshToken);
+      console.log('refresh token 응답:', response.data.data.refreshToken);
+      console.log('access token 응답', response.data.data.accessToken);
+      dispatch(setRefreshToken(response.data.data.refreshToken));
+      dispatch(setAccessToken(response.data.data.accessToken));
+
+      // console.log(response.data.data.refreshToken);
+
+      // localStorage.setItem('refreshToken', response.data.data.refreshToken);
+      // localStorage.setItem('Token', response.data.data.refreshToken);
 
       navigate('/')
     } catch (error) {
